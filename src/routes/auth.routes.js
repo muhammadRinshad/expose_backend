@@ -5,10 +5,12 @@ import {
   register,
   login,
   googleCallback,
-  getMe
+  getMe,
+  editProfile
 } from "../controllers/auth.controller.js";
 // import protect from "../middleware/protect.js";
 import protectOptional from "../middleware/protectOptional.js";
+import upload from "../middleware/multerMemory.js"; // memory storage
 
 const router = express.Router();
 
@@ -31,7 +33,13 @@ router.get(
   }),
   googleCallback
 );
-
+/////////edit profo
+router.put(
+  "/edit",
+  protectOptional,
+  upload.single("avatar"), // 👈 THIS IS WHERE IT IS USED
+  editProfile
+);
 // 🔒 STRICT AUTH
 router.get("/me", protectOptional, getMe);
 
@@ -39,5 +47,8 @@ router.get("/logout", (req, res) => {
   res.clearCookie("token");
   res.json({ message: "Logged out" });
 });
+
+router.put("/edit", protectOptional, upload.single("avatar"), editProfile);
+
 
 export default router;

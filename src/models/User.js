@@ -9,13 +9,14 @@ const userSchema = new mongoose.Schema(
       unique: true,
       lowercase: true
     },
+
     email: {
       type: String,
       required: true,
       unique: true
     },
-    password: String,
 
+    password: String,
     googleId: String,
 
     avatar: {
@@ -31,7 +32,14 @@ const userSchema = new mongoose.Schema(
     isPrivate: {
       type: Boolean,
       default: false
-    }
+    },
+
+    // 🔥 FOLLOW SYSTEM
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+
+    // 🆕 FOLLOW REQUESTS (FOR PRIVATE ACCOUNTS)
+    followRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }]
   },
   { timestamps: true }
 );
